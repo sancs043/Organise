@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Activities</title>
+  </head>
+  <body>
+    <button onclick="location.href = '/create-activity'">Create Activity</button>
+    <button onclick="location.href = '/my-activity'">My Activity</button>
+
+    <h1>Activities</h1>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>Location</th>
+          <th>Date</th>
+          <th>Max People</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for activity in activities %}
+          <tr>
+            <td>
+              <a href="/activity-details?activityid={{ activity.id }}" >{{ activity.name }}</a><br>
+              <small style="color: #888">{{ activity.description }}</small>
+            </td>
+            <td>{{ activity.location }}</td>
+            <td>{{ activity.date }}</td>
+            <td>{{ activity.maxPeople}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  </body>
+</html>

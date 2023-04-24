@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Activity</title>
+</head>
+<body>
+
+    {% load static %}
+
+    <h1>Edit Activity</h1>
+
+    <form method="post" action="/edit-activity?activity={{ activity.id }}">
+        {% csrf_token %}
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" value="{{ activity.name }}"><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description">{{ activity.description }}</textarea><br>
+        <label for="maxPeople">Maximum number of people:</label><br>
+        <input type="number" id="maxPeople" name="maxPeople" value="{{ activity.maxPeople }}"><br>
+        <label for="date_day">Date:</label><br>
+        <input type="date" id="date_day" name="date_day" value="{{ activity.date_day }}"><br>
+        <input type="submit" value="Save">
+    </form>
+
+</body>
+</html>
+

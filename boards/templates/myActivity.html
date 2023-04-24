@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activities</title>
+</head>
+<body>
+
+    {% load static %}
+
+    <button onclick="location.href = '/activities'">Home</button>
+    <button onclick="location.href = '/create-activity'">Create Activity</button>
+
+    <h1>Owned Activities</h1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Activity</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th>Actions</th>
+        {% for activity in ownedActivities %}
+            <tr>
+                <td>
+                    <a href="/activity-details?activityid={{ activity.id }}" >{{ activity.name }}</a><br>
+                </td>
+                <td>{{ activity.description }}</td>
+                <td>{{ activity.location }}</td>
+                <td>{{ activity.date }}</td>
+                <td>
+                    <a href="/delete-activity?activityid={{ activity.id }}">
+                        <img width="25px" src="{% static 'delete.png' %}" alt="Delete">
+                    </a>
+                    <a href="/edit-activity?activity={{ activity.id }}">
+                <img width="25px" src="{% static 'edit.png' %}" alt="Edit">
+            </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Joined Activities</h1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Activity</th>
+            <th>Description</th>
+            <th>Location</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for activity in joinedActivities %}
+            <tr>
+                <td>
+                    <a href="/activity-details?activityid={{ activity.activity.id }}" >{{ activity.activity.name }}</a><br>
+                </td>
+                <td>{{ activity.activity.description }}</td>
+                <td>{{ activity.activity.location }}</td>
+                <td>{{ activity.activity.date }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Activity Details</title>
+</head>
+<body>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <td>{{activity.name}}</td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td>{{activity.description}}</td>
+  </tr>
+  <tr>
+    <th>Date</th>
+    <td>{{activity.date}}</td>
+  </tr>
+
+    <tr>
+        <td colspan="2">
+            <button
+                    style="width:100%"
+                    onclick="location.href = '/join-activity?activityid=' + {{ activity.id }}"
+                    {% if isUserAlreadyJoined %}disabled{%endif%}
+            >
+                Join
+            </button>
+
+            {% if isUserAlreadyJoined %} <p style="font-style: italic"> Already joined </p> {%endif%}
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>
