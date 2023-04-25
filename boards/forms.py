@@ -19,18 +19,24 @@ class RegisterForm(forms.Form):
     class Meta:
         exclude = ("user", )
 
-class CreateActivity(forms.Form):
+class CreateActivityForm(forms.Form):
     name = forms.CharField(max_length=50)
-    description = forms.CharField(max_length=100)
+    description = forms.CharField(max_length=100, widget=forms.Textarea(attrs={"rows":"5"}))
     date = forms.DateField(widget=forms.SelectDateWidget())
     maxPeople = forms.IntegerField()
     location = forms.CharField(max_length=50)
 
 
-class EditActivity(forms.ModelForm):
+class EditActivityForm(forms.ModelForm):
     name = forms.CharField(max_length=50)
-    description = forms.CharField(max_length=100)
+    description = forms.CharField(max_length=100, widget=forms.Textarea(attrs={"rows":"5"}))
     date = forms.DateField(widget=forms.SelectDateWidget())
     maxPeople = forms.IntegerField()
     location = forms.CharField(max_length=50)
+
+    class Meta:
+        model = Activity
+        exclude = ("creator", )
+
+
 

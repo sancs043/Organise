@@ -5,13 +5,20 @@ from django.shortcuts import render, redirect
 
 from boards.models import Activity, User2, UserActivity
 
-from boards.forms import LoginForm, RegisterForm, CreateActivity, EditActivity
+from boards.forms import LoginForm, RegisterForm, CreateActivityForm, EditActivityForm
 
 import datetime
 
 def activities(request):
+
+    try:
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        print(e)
+        return redirect('Login')
+
     activities = Activity.objects.all()
-    userid = request.COOKIES['userid']
+
     if "email" in request.POST:
         email = request.POST.get()
 
@@ -41,7 +48,7 @@ def createActivity(request):
             return redirect('Activities')
     else:
         context = {}
-        context['form'] = CreateActivity()
+        context['form'] = CreateActivityForm()
         return render(request, 'createActivity.html', context)
 
 def activityDetails(request):
@@ -89,6 +96,7 @@ def register(request):
         return render(request, 'register.html', context)
 
 def login(request):
+
     if "email" in request.POST:
 
         email = request.POST.get("email")
@@ -111,6 +119,14 @@ def login(request):
         context = {}
         context['form'] = LoginForm()
         return render(request, 'login.html', context)
+
+def logout(request):
+
+    response = redirect('Activities')
+    response.delete_cookie('userid')
+    response.delete_cookie('user_email')
+
+    return response
 
 def joinActiviy(request):
 
@@ -135,16 +151,52 @@ def deleteActivity(request):
     return redirect('My Activity')
 
 def editActivity(request):
-    activity_id = request.GET.get('activity')
+
+    activity_id = request.GET.get('activityid')
     activity = Activity.objects.get(id=activity_id)
 
     if request.method == 'POST':
-        form = EditActivity(request.POST, instance=activity)
-        if form.is_valid():
-            form.save()
-            return redirect('/activity-details?activityid=' + str(activity.id))
+
+        if "name" in request.POST:
+
+            description = request.POST.get("description")
+            maxPeople = request.POST.get("maxPeople")
+            name = request.POST.get("name")
+            date_day = int(request.POST.get("date_day"))
+            date_month = int(request.POST.get("date_month"))
+            date_year = int(request.POST.get("date_year"))
+            location = request.POST.get("location")
+
+            if description == '': #above are empty redirect to createactivity
+                return redirect('Activities')
+            else:
+
+                date = datetime.date(date_year, date_month, date_day)
+
+                activity.name = name
+                activity.description = description
+                activity.maxPeople = maxPeople
+                activity.date = date
+                activity.location = location
+
+                activity.save()
+
+                return redirect('Activities')
+
     else:
-        form = EditActivity(instance=activity)
+
+        context = {}
+
+        initial = {
+            'name': activity.name,
+            'description': activity.description,
+            'date': activity.date,
+            'maxPeople': activity.maxPeople,
+            'location': activity.location
+        }
+
+        context['form'] = EditActivityForm(initial=initial)
+        return render(request, 'editActivity.html', context)
 
     return render(request, 'edit-activity.html', {'form': form})
 

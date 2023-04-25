@@ -19,6 +19,7 @@ from django.urls import path
 from boards import views
 
 urlpatterns = [
+    path('', views.activities, name="Home"),
     path('activities/', views.activities, name='Activities'),
     path('activity-details/', views.activityDetails, name='Activity Details'),
     path('create-activity/', views.createActivity, name='Create Activity'),
@@ -29,5 +30,6 @@ urlpatterns = [
     path('login/', views.login, name='Login'),
     path('register', views.register, name='Register'),
     path('join-activity/', views.joinActiviy, name='JoinActivity'),
-    path('delete-activity', views.deleteActivity, name="DeleteActivity")
+    path('delete-activity', views.deleteActivity, name="DeleteActivity"),
+    path('logout', views.logout, name="Logout")
 ]

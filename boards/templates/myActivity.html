@@ -10,8 +10,27 @@
 
     {% load static %}
 
-    <button onclick="location.href = '/activities'">Home</button>
-    <button onclick="location.href = '/create-activity'">Create Activity</button>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <a class="navbar-brand" href="/">Organise</a>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="navbar-brand" href="/create-activity">Create Activity</a>
+                </li>
+
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <a href="/logout" class="ml-2">
+                <img width="25px" src="{% static 'logout.png' %}" alt="Logout">
+            </a>
+        </div>
+    </nav>
 
     <div class="container">
 
@@ -48,9 +67,9 @@
                                 <a href="/delete-activity?activityid={{ activity.id }}">
                                     <img width="25px" src="{% static 'delete.png' %}" alt="Delete">
                                 </a>
-                                <a href="/edit-activity?activity={{ activity.id }}">
-                            <img width="25px" src="{% static 'edit.png' %}" alt="Edit">
-                        </a>
+                                <a href="/edit-activity?activityid={{ activity.id }}">
+                                    <img width="25px" src="{% static 'edit.png' %}" alt="Edit">
+                                </a>
                             </td>
                         </tr>
                     {% endfor %}
