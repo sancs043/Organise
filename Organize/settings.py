@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +27,13 @@ SECRET_KEY = 'django-insecure-kj8c+nlen#s+#_gno!o03n_n3k4^oodi4tgt+d!_6di5suenuj
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'organisenea@gmail.com'
+EMAIL_HOST_PASSWORD = 'etxpvknyigmytxdo'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 ALLOWED_HOSTS = []
 
@@ -130,3 +139,17 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+GS_BUCKET_NAME = "organisebucket"
+
+DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
+
+MEDIA_URL = "URL.to.GCS/"
+
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    "rational-camera-384920-cdcaff4e0e0e.json"
+)
+GS_EXPIRATION = timedelta(minutes=5)
+
+GS_BLOB_CHUNK_SIZE = 1024 * 256 * 40 # Needed for uploading large streams, entirely optional otherwise

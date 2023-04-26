@@ -28,8 +28,10 @@ urlpatterns = [
     path('users/', views.users, name='User'),
     path('admin/', admin.site.urls),
     path('login/', views.login, name='Login'),
-    path('register', views.register, name='Register'),
+    path('register/', views.register, name='Register'),
     path('join-activity/', views.joinActiviy, name='JoinActivity'),
-    path('delete-activity', views.deleteActivity, name="DeleteActivity"),
-    path('logout', views.logout, name="Logout")
+    path('quit-activity/', views.quitActivity, name="QuitActivity"),
+    path('delete-activity/', views.deleteActivity, name="DeleteActivity"),
+    path('upload-photo/', views.uploadPhoto, name="UploadPhoto"),
+    path('logout/', views.logout, name="Logout")
 ]

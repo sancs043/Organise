@@ -20,6 +20,9 @@
                 <li class="nav-item">
                     <a class="navbar-brand" href="/create-activity">Create Activity</a>
                 </li>
+                <li class="nav-item">
+                    <a class="navbar-brand" href="/upload-photo">Post</a>
+                </li>
 
             </ul>
             <form class="form-inline my-2 my-lg-0">
@@ -94,6 +97,7 @@
             <th>Description</th>
             <th>Location</th>
             <th>Date</th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -105,6 +109,12 @@
                 <td>{{ activity.activity.description }}</td>
                 <td>{{ activity.activity.location }}</td>
                 <td>{{ activity.activity.date }}</td>
+                <td>
+                    <a href="/quit-activity?activityid={{ activity.activity.id }}">
+{#                        <img width="25px" src="{% static 'delete.png' %}" alt="Delete">#}
+                        Quit
+                    </a>
+                </td>
 
             </tr>
         {% endfor %}

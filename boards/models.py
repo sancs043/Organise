@@ -1,5 +1,13 @@
 from django.db import models
 
+import os
+import uuid
+
+def get_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join('images', filename)
+
 # Create your models here.
 
 class User2(models.Model):
@@ -19,3 +27,13 @@ class Activity(models.Model):
 class UserActivity(models.Model):
     user = models.ForeignKey(User2, on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.activity.name
+
+class UserPhotos(models.Model):
+    user = models.ForeignKey(User2, on_delete=models.CASCADE)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to=get_file_path)
+    date = models.DateField()
+

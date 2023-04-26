@@ -3,11 +3,13 @@ from django.shortcuts import render
 # Create your views here.
 from django.shortcuts import render, redirect
 
-from boards.models import Activity, User2, UserActivity
+from boards.models import Activity, User2, UserActivity, UserPhotos
 
-from boards.forms import LoginForm, RegisterForm, CreateActivityForm, EditActivityForm
+from boards.forms import LoginForm, RegisterForm, CreateActivityForm, EditActivityForm, UploadPhotoForm
 
 import datetime
+
+from boards.mailSender import sendEmail
 
 def activities(request):
 
@@ -73,6 +75,7 @@ def users(request):
     return render(request, 'User.html', {'kullanicis': users})
 
 def register(request):
+
     if "email" in request.POST:
 
         email = request.POST.get("email")
@@ -89,6 +92,9 @@ def register(request):
 
             user = User2(email=email, password=password, name=name, surname=surname)
             user.save()
+
+            sendEmail("Welcome to Organise", "Hi, you've successfully registered the Organise. Thanks", email)
+
             return redirect('Login')
     else:
         context = {}
@@ -198,7 +204,50 @@ def editActivity(request):
         context['form'] = EditActivityForm(initial=initial)
         return render(request, 'editActivity.html', context)
 
-    return render(request, 'edit-activity.html', {'form': form})
+def quitActivity(request):
+
+    userid = request.COOKIES['userid']
+    activityid = request.GET.get('activityid')
+
+    user = User2.objects.get(id=userid)
+    activity = Activity.objects.get(id=activityid)
+
+    userActivity = UserActivity.objects.get(user=user, activity=activity)
+    userActivity.delete()
+
+    return redirect('My Activity')
+
+def uploadPhoto(request):
+
+    if request.method == "POST":
+
+        activityid = request.POST.get("activity")
+
+        if activityid == '': #above are empty redirect to uploadPhoto
+            return redirect('UploadPhoto')
+
+        activity = Activity.objects.get(id=activityid)
+
+        userid = request.COOKIES['userid']
+        user = User2.objects.get(id=userid)
+
+        photo = request.FILES.get('photo')
+
+        date = datetime.datetime.now()
+
+        userPhoto = UserPhotos(user=user, activity=activity, photo=photo, date=date)
+        userPhoto.save()
+
+        return redirect('Activities')
+
+    else:
+        context = {}
+
+        userid = request.COOKIES['userid']
+        user = User2.objects.get(id=userid)
+
+        context['form'] = UploadPhotoForm(user)
+        return render(request, 'uploadPhoto.html', context)
 
 
 
