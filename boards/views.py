@@ -85,7 +85,7 @@ def register(request):
         name = request.POST.get("name")
         surname = request.POST.get("surname")
 
-        password = hashlib.sha256(password.encode())
+        password = hashlib.sha256(password.encode()).hexdigest()
 
         try:
 
@@ -112,7 +112,7 @@ def login(request):
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        password = hashlib.sha256(password.encode())
+        password = hashlib.sha256(password.encode()).hexdigest()
 
         try:
 
