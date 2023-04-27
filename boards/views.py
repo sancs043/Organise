@@ -8,6 +8,7 @@ from boards.models import Activity, User2, UserActivity, UserPhotos
 from boards.forms import LoginForm, RegisterForm, CreateActivityForm, EditActivityForm, UploadPhotoForm
 
 import datetime
+import hashlib
 
 from boards.mailSender import sendEmail
 
@@ -20,11 +21,12 @@ def activities(request):
         return redirect('Login')
 
     activities = Activity.objects.all()
+    posts = UserPhotos.objects.all()
 
     if "email" in request.POST:
         email = request.POST.get()
 
-    return render(request, 'activity.html', {'activities': activities, 'userid': userid})
+    return render(request, 'activity.html', {'activities': activities, 'userid': userid, 'posts': posts })
 
 def createActivity(request):
 
@@ -83,6 +85,8 @@ def register(request):
         name = request.POST.get("name")
         surname = request.POST.get("surname")
 
+        password = hashlib.sha256(password.encode())
+
         try:
 
             user = User2.objects.get(email=email)
@@ -107,6 +111,8 @@ def login(request):
 
         email = request.POST.get("email")
         password = request.POST.get("password")
+
+        password = hashlib.sha256(password.encode())
 
         try:
 

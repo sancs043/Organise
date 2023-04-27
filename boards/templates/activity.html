@@ -35,38 +35,72 @@
 
     <div class="container mt-5">
 
-        <div class="row justify-content-center">
-            <div class="col-6 text-center">
-                <h1>Activities</h1>
+        <div class="row justify-content-between">
+
+            <div class="col-6">
+
+                <div class="row justify-content-center">
+                    <div class="col-12 text-center">
+                        <h1>Posts</h1>
+                    </div>
+                </div>
+
+                <div class="row">
+
+
+                        {% for post in posts %}
+
+                            <div class="col-5 border text-center mt-2 mr-2">
+                                <a href="/activity-details?activityid={{ post.activity.id }}" >
+                                    <img src="https://storage.googleapis.com/organisebucket/{{  post.photo }}" width="100%" />
+                                </a>
+                            </div>
+
+                        {% endfor %}
+
+                </div>
+
+                </div>
+
+            <div class="col-5">
+
+            <div class="row justify-content-center">
+                <div class="col-12 text-center">
+                    <h1>Activities</h1>
+                </div>
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <table class="table" border="1">
+                        <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Max People</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for activity in activities %}
+                            <tr>
+                                <td>
+                                    <a href="/activity-details?activityid={{ activity.id }}" >{{ activity.name }}</a><br>
+                                    <small style="color: #888">{{ activity.description }}</small>
+                                </td>
+                                <td>{{ activity.location }}</td>
+                                <td>{{ activity.date }}</td>
+                                <td>{{ activity.maxPeople}}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
         </div>
 
-        <div class="row">
-            <div class="col-12">
-                <table class="table" border="1">
-                  <thead>
-                    <tr>
-                      <th>Activity</th>
-                      <th>Location</th>
-                      <th>Date</th>
-                      <th>Max People</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {% for activity in activities %}
-                      <tr>
-                        <td>
-                          <a href="/activity-details?activityid={{ activity.id }}" >{{ activity.name }}</a><br>
-                          <small style="color: #888">{{ activity.description }}</small>
-                        </td>
-                        <td>{{ activity.location }}</td>
-                        <td>{{ activity.date }}</td>
-                        <td>{{ activity.maxPeople}}</td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
-            </div>
         </div>
 
     </div>
