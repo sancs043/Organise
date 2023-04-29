@@ -21,14 +21,14 @@ class RegisterForm(forms.Form):
 
 class CreateActivityForm(forms.Form):
     name = forms.CharField(max_length=50)
-    description = forms.CharField(max_length=100, widget=forms.Textarea(attrs={"rows":"5"}))
+    description = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"rows":"5"}))
     date = forms.DateField(widget=forms.SelectDateWidget())
     maxPeople = forms.IntegerField()
     location = forms.CharField(max_length=50)
 
 class EditActivityForm(forms.ModelForm):
     name = forms.CharField(max_length=50)
-    description = forms.CharField(max_length=100, widget=forms.Textarea(attrs={"rows":"5"}))
+    description = forms.CharField(max_length=500, widget=forms.Textarea(attrs={"rows":"5"}))
     date = forms.DateField(widget=forms.SelectDateWidget())
     maxPeople = forms.IntegerField()
     location = forms.CharField(max_length=50)

@@ -18,7 +18,7 @@ class User2(models.Model):
 
 class Activity(models.Model):
     name = models.CharField(max_length=50)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=500)
     date = models.DateField()
     maxPeople = models.IntegerField()
     location = models.CharField(max_length=50, blank=True, null=True)
