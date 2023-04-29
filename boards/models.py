@@ -37,3 +37,8 @@ class UserPhotos(models.Model):
     photo = models.ImageField(upload_to=get_file_path)
     date = models.DateField()
 
+class UserFollowings(models.Model):
+
+    follower = models.ForeignKey(User2, on_delete=models.CASCADE, related_name='follower')
+    following = models.ForeignKey(User2, on_delete=models.CASCADE, related_name='following')
+

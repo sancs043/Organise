@@ -19,13 +19,13 @@ from django.urls import path
 from boards import views
 
 urlpatterns = [
-    path('', views.activities, name="Home"),
+    path('', views.home, name="Home"),
     path('activities/', views.activities, name='Activities'),
     path('activity-details/', views.activityDetails, name='Activity Details'),
     path('create-activity/', views.createActivity, name='Create Activity'),
     path('edit-activity/', views.editActivity, name='Edit Activity'),
     path('my-activity/', views.myActivity, name='My Activity'),
-    path('users/', views.users, name='User'),
+    path('user-list/', views.userList, name='UserList'),
     path('admin/', admin.site.urls),
     path('login/', views.login, name='Login'),
     path('register/', views.register, name='Register'),
@@ -33,5 +33,8 @@ urlpatterns = [
     path('quit-activity/', views.quitActivity, name="QuitActivity"),
     path('delete-activity/', views.deleteActivity, name="DeleteActivity"),
     path('upload-photo/', views.uploadPhoto, name="UploadPhoto"),
+    path('user-profile/', views.userProfile, name="UserProfile"),
+    path('follow/', views.follow, name="Follow"),
+    path('unfollow/', views.unfollow, name="UnFollow"),
     path('logout/', views.logout, name="Logout")
 ]

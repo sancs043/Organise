@@ -23,12 +23,19 @@
                 <li class="nav-item">
                     <a class="navbar-brand" href="/upload-photo">Post</a>
                 </li>
+                <li class="nav-item">
+                    <a class="navbar-brand" href="/activities">Activities</a>
+                </li>
 
             </ul>
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
+
+            <a href="/user-profile?userid={{ userid }}" class="ml-2">
+                <img width="25px" src="{% static 'person.png' %}" alt="Profile">
+            </a>
             <a href="/logout" class="ml-2">
                 <img width="25px" src="{% static 'logout.png' %}" alt="Logout">
             </a>
@@ -63,7 +70,9 @@
                             <td>
                                 <a href="/activity-details?activityid={{ activity.id }}" >{{ activity.name }}</a><br>
                             </td>
-                            <td>{{ activity.description }}</td>
+                            <td>
+                                {{ activity.description }}
+                            </td>
                             <td>{{ activity.location }}</td>
                             <td>{{ activity.date }}</td>
                             <td>
