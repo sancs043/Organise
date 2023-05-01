@@ -563,3 +563,14 @@ def search(request):
     searchText = request.POST.get('search')
 
     return redirect('/user-list?search=' + searchText)
+
+def deletePost(request):
+    # Get the activity id from the GET request
+    postid = request.GET.get('postid')
+
+    # Get the activity object from the Activity model using its id
+    post = UserPhotos.objects.get(id=postid)
+    post.delete()
+
+    # Redirect the user to the 'My Activity' page
+    return redirect('/user-profile')

@@ -86,6 +86,19 @@
 
             <div class="col-4 card">
                 <div class="card-body">
+
+                    {% if user.id == profileUser.id %}
+                        <div class="card-title">
+                            <div class="row justify-content-center">
+                                <div class="col-5 text-center">
+                                    <a href="/delete-post?postid={{ post.id }}" class="card-link">
+                                        <img width="25px" src="{% static 'delete.png' %}" alt="Delete">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
                     <p class="card-text">
                         <a href="/activity-details?activityid={{ post.activity.id }}" >
                             <img src="https://storage.googleapis.com/organisebucket/{{  post.photo }}" width="100%" />
