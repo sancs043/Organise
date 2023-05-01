@@ -14,6 +14,7 @@ import datetime
 import hashlib
 from boards.mailSender import sendEmail
 from django.contrib import messages
+from django.db.models import Q
 
 
 # Define the view for the homepage
@@ -68,8 +69,12 @@ def activities(request):
 
 # Define the view for creating a new activity
 def createActivity(request):
-    # Retrieve user ID from cookies
-    userid = request.COOKIES['userid']
+
+    try:
+        # Retrieve user ID from cookies
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        return redirect('Login')
 
     if "name" in request.POST:
         # If form has been submitted, retrieve form data
@@ -104,22 +109,39 @@ def createActivity(request):
 # Define a function named "activityDetails" which accepts a request object
 def activityDetails(request):
     # get the user ID from the cookies stored in the request object
-    userid = request.COOKIES['userid']
+    try:
+        # Retrieve user ID from cookies
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        return redirect('Login')
+
     # get the activity ID from the GET parameters stored in the request object
     activityid = request.GET.get('activityid')
     # retrieve the activity object associated with the given activity ID
     activity = Activity.objects.get(id=activityid)
 
+    maxPeopleReached = False
+    userInActivity = UserActivity.objects.filter(activity=activityid).count()
+
+    if userInActivity >= activity.maxPeople:
+        maxPeopleReached = True
+
     # check if the user has already joined the activity
     isUserAlreadyJoined = UserActivity.objects.filter(user=userid, activity=activityid).exists()
 
     # render the activity details page with the user ID, activity details, and a flag indicating if the user has already joined the activity
-    return render(request, 'activityDetails.html', {'userid': userid, 'activity': activity, 'isUserAlreadyJoined': isUserAlreadyJoined })
+    data = {'userid': userid, 'activity': activity, 'isUserAlreadyJoined': isUserAlreadyJoined, 'maxPeopleReached': maxPeopleReached }
+    return render(request, 'activityDetails.html', data)
 
 # Define a function named "myActivity" which accepts a request object
 def myActivity(request):
     # get the user ID and user email from the cookies stored in the request object
-    userid = request.COOKIES['userid']
+    try:
+        # Retrieve user ID from cookies
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        return redirect('Login')
+
     user_email = request.COOKIES['user_email']
     # retrieve the activities owned by the user
     ownedActivities = Activity.objects.filter(creator=userid)
@@ -131,6 +153,13 @@ def myActivity(request):
 
 # Define a function named "userList" which accepts a request object
 def userList(request):
+
+    try:
+        # Retrieve user ID from cookies
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        return redirect('Login')
+
     # get the follower ID, following ID, and search string from the GET parameters stored in the request object
     followerId = request.GET.get('followerId')
     followingId = request.GET.get('followingId')
@@ -141,7 +170,7 @@ def userList(request):
 
     # if the search string is not None, retrieve all user objects
     if search:
-        users = User2.objects.all()
+        users = User2.objects.filter(Q(name__contains=search) | Q(surname__contains=search) | Q(email__contains=search))
 
     # if the following ID is not None, retrieve all users who are following the user with the given following ID
     elif followingId:
@@ -163,6 +192,7 @@ def userList(request):
 
 # This function registers a new user to the system
 def register(request):
+
     # check if a POST request containing email has been sent
     if "email" in request.POST:
         # retrieve the email, password, name, and surname from the request
@@ -171,6 +201,21 @@ def register(request):
         name = request.POST.get("name")
         surname = request.POST.get("surname")
 
+        if not email:
+            messages.error(request, 'Please fill the required fields!')
+
+        if not password:
+            messages.error(request, 'Please fill the required fields!')
+
+        if not name:
+            messages.error(request, 'Please fill the required fields!')
+
+        if not surname:
+            messages.error(request, 'Please fill the required fields!')
+
+        if not email or not password or not name or not surname:
+            return redirect('Register')
+
         # hash the password using SHA-256 algorithm
         password = hashlib.sha256(password.encode()).hexdigest()
 
@@ -178,6 +223,9 @@ def register(request):
             # check if a user with the same email already exists
             user = User2.objects.get(email=email)
             # redirect to the registration page if the user already exists
+
+            messages.error(request, 'A user has already registered with this email!')
+
             return redirect('Register')
 
         except User2.DoesNotExist:
@@ -233,6 +281,7 @@ def login(request):
         # render the 'login.html' template with the context dictionary
         return render(request, 'login.html', context)
 def logout(request):
+
     # redirect the user to the 'Activities' page
     response = redirect('Activities')
     # delete the 'userid' and 'user_email' cookies from the response object
@@ -241,11 +290,14 @@ def logout(request):
     # return the modified response object
     return response
 
-
 # This function joins the user to an activity
 def joinActiviy(request):
     # Get the user id from the cookie
-    userid = request.COOKIES['userid']
+    try:
+        # Retrieve user ID from cookies
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        return redirect('Login')
 
     # Get the activity id from the GET request
     activityid = request.GET.get('activityid')
@@ -260,8 +312,6 @@ def joinActiviy(request):
 
     # Redirect the user to the 'My Activity' page
     return redirect('My Activity')
-
-
 
 def deleteActivity(request):
     # Get the activity id from the GET request
@@ -286,11 +336,15 @@ def deleteActivity(request):
     # Redirect the user to the 'My Activity' page
     return redirect('My Activity')
 
-
-
 def editActivity(request):  # defining a function to edit an activity
 
-    userid = request.COOKIES['userid']  # getting the userid from the request cookies
+    # getting the userid from the request cookies
+    try:
+        # Retrieve user ID from cookies
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        return redirect('Login')
+
 
     activity_id = request.GET.get('activityid')  # getting the activityid from the GET request
     activity = Activity.objects.get(id=activity_id)  # getting the activity object with the activityid
@@ -367,11 +421,15 @@ def quitActivity(request):  # defining a function to quit an activity
 
 # Define a function to handle uploading a photo for an activity
 def uploadPhoto(request):
+
     # Check if the request method is POST
     if request.method == "POST":
 
         # Get the activity ID from the request's POST data
-        activityid = request.POST.get("activity")
+        userActivityId = request.POST.get("activity")
+
+        userActitivity = UserActivity.objects.get(id=userActivityId)
+        activityid = userActitivity.activity.id
 
         # Check if the activity ID is empty
         if activityid == '':
@@ -423,6 +481,7 @@ def uploadPhoto(request):
 
             # Create a new upload photo form object for the user
             context['form'] = UploadPhotoForm(user)
+            context['userid'] = userid
 
             # Render the upload photo page with the context and return the response
             return render(request, 'uploadPhoto.html', context)
@@ -430,11 +489,18 @@ def uploadPhoto(request):
             # If the user is not logged in or does not exist, display an error message and redirect to the login page
             messages.error(request, 'User not logged in.')
             return redirect('Login')
+
 # Define a function to render the user profile page
 def userProfile(request):
 
     # Get the user ID from the cookie in the request
-    userid = request.COOKIES['userid']
+
+    try:
+        # Retrieve user ID from cookies
+        userid = request.COOKIES['userid']
+    except Exception as e:
+        return redirect('Login')
+
     # Get the profile user ID from the request
     profileUserId = request.GET.get('userid')
 
@@ -458,6 +524,7 @@ def userProfile(request):
 
         # Render the user profile page with the data
         return render(request, 'userProfile.html', data)
+
 def follow(request):  # define a view function that handles the request to follow a user
 
     followerId = request.GET.get('followerId')  # get the ID of the follower from the request
@@ -491,3 +558,8 @@ def unfollow(request):
 
     # Redirect the user to the profile page of the user they unfollowed
     return redirect('/user-profile?userid=' + followingId)
+
+def search(request):
+    searchText = request.POST.get('search')
+
+    return redirect('/user-list?search=' + searchText)

@@ -21,10 +21,10 @@ import os
 # define models for the application
 class User2(models.Model):
     # define attributes for User2 database model
-    name = models.CharField(max_length=50)
-    surname = models.CharField(max_length=50)
-    email = models.CharField(max_length=150)
-    password = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, blank=False, null=False)
+    surname = models.CharField(max_length=50, blank=False, null=False)
+    email = models.CharField(max_length=150, blank=False, null=False)
+    password = models.CharField(max_length=50, blank=False, null=False)
 
 class Activity(models.Model):
     # define attributes for Activity datbase model

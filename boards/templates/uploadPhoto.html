@@ -25,11 +25,12 @@
                 </li>
 
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form method="POST" action="/search/" class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search" name="search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
-            <a href="/user-profile?userid={{ user.id }}" class="ml-2">
+            <a href="/user-profile?userid={{ userid }}" class="ml-2">
                 <img width="25px" src="{% static 'person.png' %}" alt="Profile">
             </a>
             <a href="/logout" class="ml-2">
@@ -66,12 +67,12 @@
                         {% endfor %}
 
                         {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
 
                         <button type="submit" class="btn btn-success btn-block">Submit</button>
                     </form>

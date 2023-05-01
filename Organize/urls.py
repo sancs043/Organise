@@ -72,4 +72,6 @@ urlpatterns = [
 
     # map /logout URL path to logout view
     path('logout/', views.logout, name="Logout"),
+
+    path('search/', views.search, name="Search"),
 ]

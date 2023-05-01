@@ -27,8 +27,9 @@
                 <a class="navbar-brand" href="/activities">Activities</a>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <form method="POST" action="/search/" class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search" name="search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <a href="/user-profile?userid={{ user.id }}" class="ml-2">
@@ -85,13 +86,6 @@
 
             <div class="col-4 card">
                 <div class="card-body">
-                    <div class="card-title">
-                        <div class="row justify-content-center">
-                            <div class="col-5 text-center">
-                                <a href="/post-photos" class="card-link">Photos</a>
-                            </div>
-                        </div>
-                    </div>
                     <p class="card-text">
                         <a href="/activity-details?activityid={{ post.activity.id }}" >
                             <img src="https://storage.googleapis.com/organisebucket/{{  post.photo }}" width="100%" />

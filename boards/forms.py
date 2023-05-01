@@ -12,9 +12,9 @@ class LoginForm(forms.Form): # Create a form class named LoginForm that inherits
 
 class RegisterForm(forms.Form): # Create a form class named RegisterForm that inherits from the Form class
     email = forms.EmailField(required=True) # Create a field named email, with a label 'Email' and required to be filled
-    password = forms.CharField(widget=forms.PasswordInput()) # Create a password field named password and provide a widget to mask the input
-    name = forms.CharField(max_length=150) # Create a field named name with a maximum length of 150 characters
-    surname = forms.CharField(max_length=150) # Create a field named surname with a maximum length of 150 characters
+    password = forms.CharField(required=True, widget=forms.PasswordInput()) # Create a password field named password and provide a widget to mask the input
+    name = forms.CharField(required=True, max_length=150) # Create a field named name with a maximum length of 150 characters
+    surname = forms.CharField(required=True, max_length=150) # Create a field named surname with a maximum length of 150 characters
 
     class Meta: # Define the class for the Meta configuration
         exclude = ("user", ) # Exclude the user field

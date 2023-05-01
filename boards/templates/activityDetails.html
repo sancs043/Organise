@@ -27,8 +27,9 @@
                     <a class="navbar-brand" href="/activities">Activities</a>
                 </li>
             </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <form method="POST" action="/search/" class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search" name="search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form>
             <a href="/user-profile?userid={{ userid }}" class="ml-2">
@@ -58,16 +59,23 @@
 
         <tr>
             <td colspan="2">
-                <button
-                        class="btn btn-primary"
-                        style="width:100%"
-                        onclick="location.href = '/join-activity?activityid=' + {{ activity.id }}"
-                        {% if isUserAlreadyJoined %}disabled{%endif%}
-                >
-                    Join
-                </button>
+                {% if not maxPeopleReached %}
 
-                {% if isUserAlreadyJoined %} <p style="font-style: italic"> Already joined </p> {%endif%}
+                    <button
+                            class="btn btn-primary"
+                            style="width:100%"
+                            onclick="location.href = '/join-activity?activityid=' + {{ activity.id }}"
+                            {% if isUserAlreadyJoined %}disabled{%endif%}
+                    >
+                        Join
+                    </button>
+
+                    {% if isUserAlreadyJoined %} <p style="font-style: italic"> Already joined </p> {%endif%}
+
+                {% else %}
+
+                    ** Maximum people reached !!
+                {% endif %}
             </td>
         </tr>
 
