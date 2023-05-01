@@ -60,6 +60,7 @@
                             <th>Location</th>
                             <th>Date</th>
                             <th>Max People</th>
+                            <th>Activity Creator</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -72,6 +73,9 @@
                                 <td>{{ activity.location }}</td>
                                 <td>{{ activity.date }}</td>
                                 <td>{{ activity.maxPeople}}</td>
+                                <td>
+                                    <a href="/user-profile?userid={{ activity.creator.id }}" class="btn btn-primary">{{ activity.creator.name }}</a>
+                                 </td>
                             </tr>
                         {% endfor %}
                         </tbody>

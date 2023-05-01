@@ -6,9 +6,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
   </head>
   <body>
-
   {% load static %}
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -38,23 +36,16 @@
           </a>
       </div>
     </nav>
-
     <div class="container mt-5">
-
         <div class="row justify-content-between">
-
             <div class="col-12">
-
                 <div class="row justify-content-center">
                     <div class="col-12 text-center">
                         <h1>Posts</h1>
                     </div>
                 </div>
-
                 <div class="row">
-
                         {% for post in posts %}
-
                             <div class="col-4 card">
                                 <div class="card-body">
                                     <div class="card-title">
@@ -63,28 +54,22 @@
                                                 <a href="/user-profile?userid={{ post.user.id }}" class="card-link">{{ post.user.name }}</a>
                                             </div>
                                             <div class="col-5 text-right">
-                                                <a href="/post-photos" class="card-link">Post Photos</a>
+
                                             </div>
                                         </div>
                                     </div>
+
                                     <p class="card-text">
                                         <a href="/activity-details?activityid={{ post.activity.id }}" >
                                             <img src="https://storage.googleapis.com/organisebucket/{{  post.photo }}" width="100%" />
                                         </a>
                                     </p>
-
                                 </div>
                             </div>
-
                         {% endfor %}
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
   </body>
 </html>
